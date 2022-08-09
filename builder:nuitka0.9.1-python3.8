@@ -1,0 +1,6 @@
+FROM echolixiaopeng/nuitka:0.9.1-python3.8 as builder
+LABEL scenario=build lang=python python=3.8 builder=nuitka nuitka=0.9.1
+WORKDIR /app
+ONBUILD COPY . .
+ONBUILD RUN ls *.py | grep -v 'main.py'| sed 's/.py//' | xargs | sed 's/ /,/g' | xargs -I {} python -m nuitka --follow-import-to={} main.py
+ONBUILD RUN ls *.py | xargs rm

@@ -1,0 +1,9 @@
+FROM python:3.8
+LABEL scenario=launch lang=python python=3.8 cmd=main.py
+WORKDIR /app
+RUN mkdir log
+ONBUILD COPY requirements.txt requirements.txt
+ONBUILD RUN --mount=type=cache,target=/root/.cache \
+    pip3 install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+ONBUILD COPY . .
+CMD [ "python", "./main.py" ]
